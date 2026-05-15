@@ -4,7 +4,7 @@ import { ColDef, ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, styled, Skeleton, CircularProgress, Typography, Stack } from '@mui/material';
-import { Loader2 } from 'lucide-react';
+import { CachedRounded } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Register all community modules for v33
@@ -119,7 +119,7 @@ export const AppGrid: React.FC<AppGridProps> = ({
                 transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                 sx={{ color: 'primary.main', display: 'flex' }}
               >
-                <Loader2 size={32} />
+                <CachedRounded sx={{ fontSize: 32 }} />
               </Box>
               <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', letterSpacing: '0.05em' }}>
                 SYNCING GRID DATA...

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, AppBar, Toolbar, IconButton, Typography, Slide, Box, Stack } from '@mui/material';
+import { CloseRounded, OpenInFullRounded } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
-import { X, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SPRINGS, VARIANTS } from '@/constants/motion';
 
@@ -60,10 +60,10 @@ export const AppFullscreenDialog: React.FC<AppFullscreenDialogProps> = ({
             aria-label="close"
             sx={{ mr: 2 }}
           >
-            <X size={20} />
+            <CloseRounded sx={{ fontSize: 20 }} />
           </IconButton>
           <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flex: 1 }}>
-            <Maximize2 size={16} color="#64748b" />
+            <OpenInFullRounded sx={{ fontSize: 16, color: "#64748b" }} />
             <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', letterSpacing: '-0.01em' }} variant="h6">
               {title}
             </Typography>

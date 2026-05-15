@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Drawer, Typography, IconButton, Stack, Divider, styled } from '@mui/material';
-import { X } from 'lucide-react';
+import { CloseRounded } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 
 import { SPRINGS } from '@/constants/motion';
@@ -51,7 +51,7 @@ export const AppSlideOver: React.FC<AppSlideOverProps> = ({
             {title}
           </Typography>
           <IconButton size="small" onClick={onClose} sx={{ color: 'text.secondary' }}>
-            <X size={18} />
+            <CloseRounded sx={{ fontSize: 18 }} />
           </IconButton>
         </Box>
         

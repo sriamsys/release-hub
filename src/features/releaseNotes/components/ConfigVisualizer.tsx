@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Paper, IconButton, Tooltip, Stack } from '@mui/material';
-import { X, Code2, Copy, Check } from 'lucide-react';
+import { CloseRounded, CodeRounded, ContentCopyRounded, CheckRounded } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageConfig } from '../types/config';
 import { VARIANTS, SPRINGS } from '@/constants/motion';
@@ -45,17 +45,17 @@ export const ConfigVisualizer: React.FC<ConfigVisualizerProps> = ({ config, open
         >
           <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid', borderColor: 'divider' }}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Code2 size={18} />
+              <CodeRounded sx={{ fontSize: 18 }} />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>Page Configuration</Typography>
             </Stack>
             <Stack direction="row" spacing={0.5}>
               <Tooltip title="Copy JSON">
                 <IconButton size="small" onClick={handleCopy}>
-                  {copied ? <Check size={16} color="#10b981" /> : <Copy size={16} />}
+                  {copied ? <CheckRounded sx={{ fontSize: 16, color: "#10b981" }} /> : <ContentCopyRounded sx={{ fontSize: 16 }} />}
                 </IconButton>
               </Tooltip>
               <IconButton size="small" onClick={onClose}>
-                <X size={18} />
+                <CloseRounded sx={{ fontSize: 18 }} />
               </IconButton>
             </Stack>
           </Box>

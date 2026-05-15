@@ -1,25 +1,33 @@
 import React from 'react';
 import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Divider, useTheme } from '@mui/material';
-import { LayoutDashboard, Rocket, FileText, Settings, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  DashboardRounded, 
+  CampaignRounded, 
+  DescriptionRounded, 
+  SettingsRounded, 
+  MenuBookRounded, 
+  ChevronLeftRounded, 
+  ChevronRightRounded 
+} from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
 const DRAWER_WIDTH = 260;
 
 const NAV_ITEMS = [
-  { label: 'Dashboard', icon: <LayoutDashboard size={18} />, path: '/' },
-  { label: 'Release Notes', icon: <Rocket size={18} />, path: '/release-notes' },
+  { label: 'Dashboard', icon: <DashboardRounded sx={{ fontSize: 18 }} />, path: '/' },
+  { label: 'Release Notes', icon: <CampaignRounded sx={{ fontSize: 18 }} />, path: '/release-notes' },
 ];
 
 const DEMO_ITEMS = [
-  { label: 'Basic Demo', icon: <ChevronRight size={16} />, path: '/basic-demo' },
-  { label: 'Advanced Demo', icon: <ChevronRight size={16} />, path: '/advanced-demo' },
-  { label: 'Enterprise Demo', icon: <ChevronRight size={16} />, path: '/enterprise-demo' },
+  { label: 'Basic Demo', icon: <ChevronRightRounded sx={{ fontSize: 16 }} />, path: '/basic-demo' },
+  { label: 'Advanced Demo', icon: <ChevronRightRounded sx={{ fontSize: 16 }} />, path: '/advanced-demo' },
+  { label: 'Enterprise Demo', icon: <ChevronRightRounded sx={{ fontSize: 16 }} />, path: '/enterprise-demo' },
 ];
 
 const SECONDARY_NAV_ITEMS = [
-  { label: 'Documentation', icon: <FileText size={18} />, path: '/docs' },
-  { label: 'Configuration', icon: <Settings size={18} />, path: '/config' },
+  { label: 'Documentation', icon: <DescriptionRounded sx={{ fontSize: 18 }} />, path: '/docs' },
+  { label: 'Configuration', icon: <SettingsRounded sx={{ fontSize: 18 }} />, path: '/config' },
 ];
 
 /**
@@ -50,7 +58,7 @@ export const AppShell: React.FC = () => {
       >
         <Toolbar variant="dense">
           <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-            <Rocket size={20} style={{ color: theme.palette.primary.main, marginRight: '10px' }} />
+            <CampaignRounded sx={{ fontSize: 20, color: theme.palette.primary.main, mr: 1 }} />
             <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 800, letterSpacing: '-0.02em', color: 'primary.main' }}>
               ReleaseHub
             </Typography>

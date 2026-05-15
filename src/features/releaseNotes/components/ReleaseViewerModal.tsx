@@ -4,7 +4,18 @@ import {
   Container, Chip, Dialog, DialogContent, DialogActions,
   Tooltip, Zoom, Link, Grid, CircularProgress
 } from '@mui/material';
-import { X, Calendar, User, Rocket, Tag, Maximize2, Minimize2, ExternalLink, Copy, Check, Printer, Share2 } from 'lucide-react';
+import { 
+  CloseRounded, 
+  CalendarTodayRounded, 
+  PersonRounded, 
+  CampaignRounded, 
+  LocalOfferRounded, 
+  OpenInFullRounded, 
+  CloseFullscreenRounded, 
+  CheckRounded, 
+  PrintRounded, 
+  ShareRounded 
+} from '@mui/icons-material';
 import { ReleaseNote } from '../types';
 import { AppStatusChip, AppButton } from '@/components';
 import { motion, AnimatePresence } from 'motion/react';
@@ -103,7 +114,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                   '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.2)' }
                 }}
               >
-                {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+                {isFullscreen ? <CloseFullscreenRounded sx={{ fontSize: 18 }} /> : <OpenInFullRounded sx={{ fontSize: 18 }} />}
               </IconButton>
             </Tooltip>
             <IconButton 
@@ -115,7 +126,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                 '&:hover': { bgcolor: 'rgba(239, 68, 68, 0.2)', color: '#fee2e2' }
               }}
             >
-              <X size={20} />
+              <CloseRounded sx={{ fontSize: 20 }} />
             </IconButton>
           </Box>
 
@@ -248,7 +259,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                               <Stack spacing={2.5}>
                                 <Stack direction="row" spacing={2} alignItems="center">
                                   <Box sx={{ p: 1, bgcolor: 'white', borderRadius: 1.5, border: '1px solid', borderColor: 'divider', display: 'flex' }}>
-                                    <User size={16} />
+                                    <PersonRounded sx={{ fontSize: 16 }} />
                                   </Box>
                                   <Box>
                                     <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', fontWeight: 600 }}>Publisher</Typography>
@@ -258,7 +269,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
 
                                 <Stack direction="row" spacing={2} alignItems="center">
                                   <Box sx={{ p: 1, bgcolor: 'white', borderRadius: 1.5, border: '1px solid', borderColor: 'divider', display: 'flex' }}>
-                                    <Calendar size={16} />
+                                    <CalendarTodayRounded sx={{ fontSize: 16 }} />
                                   </Box>
                                   <Box>
                                     <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', fontWeight: 600 }}>Release Date</Typography>
@@ -270,7 +281,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
 
                                 <Stack direction="row" spacing={2} alignItems="center">
                                   <Box sx={{ p: 1, bgcolor: 'white', borderRadius: 1.5, border: '1px solid', borderColor: 'divider', display: 'flex' }}>
-                                    <Tag size={16} />
+                                    <LocalOfferRounded sx={{ fontSize: 16 }} />
                                   </Box>
                                   <Box>
                                     <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', fontWeight: 600 }}>Taxonomy</Typography>
@@ -283,7 +294,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                             </Box>
 
                             <Box sx={{ p: 2, bgcolor: 'primary.light', borderRadius: 2, color: 'primary.contrastText', position: 'relative', overflow: 'hidden' }}>
-                              <Rocket size={40} style={{ position: 'absolute', right: -10, bottom: -10, opacity: 0.1, transform: 'rotate(-20deg)' }} />
+                              <CampaignRounded sx={{ fontSize: 40, position: 'absolute', right: -10, bottom: -10, opacity: 0.1, transform: 'rotate(-20deg)' }} />
                               <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>Executive Summary</Typography>
                               <Typography variant="caption" sx={{ lineHeight: 1.5, opacity: 0.9, display: 'block' }}>
                                 {displayNote.description}
@@ -291,8 +302,8 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                             </Box>
 
                             <Stack direction="row" spacing={1} pt={2}>
-                              <AppButton variant="text" size="small" startIcon={<Printer size={14} />} sx={{ fontSize: '0.7rem' }}>Download PDF</AppButton>
-                              <AppButton variant="text" size="small" startIcon={<Share2 size={14} />} sx={{ fontSize: '0.7rem' }}>Archive</AppButton>
+                              <AppButton variant="text" size="small" startIcon={<PrintRounded sx={{ fontSize: 14 }} />} sx={{ fontSize: '0.7rem' }}>Download PDF</AppButton>
+                              <AppButton variant="text" size="small" startIcon={<ShareRounded sx={{ fontSize: 14 }} />} sx={{ fontSize: '0.7rem' }}>Archive</AppButton>
                             </Stack>
                           </Stack>
                         </Box>
@@ -397,7 +408,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
           }}>
             <AppButton 
               variant="outlined" 
-              startIcon={copied ? <Check size={18} /> : <Share2 size={18} />}
+              startIcon={copied ? <CheckRounded sx={{ fontSize: 18 }} /> : <ShareRounded sx={{ fontSize: 18 }} />}
               onClick={handleCopyLink}
               sx={{ height: 52, px: 4, borderRadius: 3, color: copied ? 'success.main' : 'text.primary' }}
             >

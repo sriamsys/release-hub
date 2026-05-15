@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Stack, IconButton, Divider, Link as MuiLink } from '@mui/material';
-import { X, BookOpen, ExternalLink, ChevronRight } from 'lucide-react';
+import { CloseRounded, MenuBookRounded, OpenInNewRounded, ChevronRightRounded } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'motion/react';
 import { VARIANTS, SPRINGS } from '@/constants/motion';
 
@@ -34,7 +34,7 @@ const DocLink: React.FC<{ title: string; subtitle: string }> = ({ title, subtitl
         <Typography variant="body2" sx={{ fontWeight: 600 }}>{title}</Typography>
         <Typography variant="caption" color="text.secondary">{subtitle}</Typography>
       </Box>
-      <ChevronRight size={16} />
+      <ChevronRightRounded sx={{ fontSize: 16 }} />
     </Stack>
   </Box>
 );
@@ -65,11 +65,11 @@ export const DeveloperDocs: React.FC<DeveloperDocsProps> = ({ open, onClose }) =
         >
           <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid', borderColor: 'divider' }}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <BookOpen size={18} />
+              <MenuBookRounded sx={{ fontSize: 18 }} />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>Developer Docs</Typography>
             </Stack>
             <IconButton size="small" onClick={onClose}>
-              <X size={18} />
+              <CloseRounded sx={{ fontSize: 18 }} />
             </IconButton>
           </Box>
           
@@ -98,7 +98,7 @@ export const DeveloperDocs: React.FC<DeveloperDocsProps> = ({ open, onClose }) =
                 Check out the official documentation for more detailed integration guides.
               </Typography>
               <MuiLink href="#" color="inherit" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, fontSize: '0.75rem', fontWeight: 600 }}>
-                Open Portal <ExternalLink size={12} />
+                Open Portal <OpenInNewRounded sx={{ fontSize: 12 }} />
               </MuiLink>
             </Box>
           </Box>

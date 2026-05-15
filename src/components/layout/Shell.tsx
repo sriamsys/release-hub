@@ -1,20 +1,26 @@
 import React from 'react';
 import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Divider } from '@mui/material';
-import { LayoutDashboard, Rocket, FileText, Settings, BookOpen } from 'lucide-react';
+import { 
+  DashboardRounded, 
+  CampaignRounded, 
+  DescriptionRounded, 
+  SettingsRounded, 
+  MenuBookRounded 
+} from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
 const DRAWER_WIDTH = 240;
 
 const NAV_ITEMS = [
-  { label: 'Dashboard', icon: <LayoutDashboard size={18} />, path: '/' },
-  { label: 'Releases', icon: <Rocket size={18} />, path: '/releases' },
-  { label: 'Documents', icon: <FileText size={18} />, path: '/docs' },
-  { label: 'Api Spec', icon: <BookOpen size={18} />, path: '/api-spec' },
+  { label: 'Dashboard', icon: <DashboardRounded sx={{ fontSize: 18 }} />, path: '/' },
+  { label: 'Releases', icon: <CampaignRounded sx={{ fontSize: 18 }} />, path: '/releases' },
+  { label: 'Documents', icon: <DescriptionRounded sx={{ fontSize: 18 }} />, path: '/docs' },
+  { label: 'Api Spec', icon: <MenuBookRounded sx={{ fontSize: 18 }} />, path: '/api-spec' },
 ];
 
 const SECONDARY_NAV_ITEMS = [
-  { label: 'Settings', icon: <Settings size={18} />, path: '/settings' },
+  { label: 'Settings', icon: <SettingsRounded sx={{ fontSize: 18 }} />, path: '/settings' },
 ];
 
 export const Shell: React.FC = () => {
@@ -35,7 +41,7 @@ export const Shell: React.FC = () => {
         }}
       >
         <Toolbar variant="dense">
-          <Rocket className="mr-2 text-blue-600" size={20} style={{ marginRight: '8px', color: '#2563eb' }} />
+          <CampaignRounded sx={{ mr: 1, color: '#2563eb', fontSize: 20 }} />
           <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>
             ReleaseHub
           </Typography>

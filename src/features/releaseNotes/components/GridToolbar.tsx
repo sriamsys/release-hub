@@ -1,6 +1,14 @@
 import React from 'react';
 import { Box, Stack, TextField, InputAdornment, Tooltip, IconButton, Divider, Typography, Button } from '@mui/material';
-import { Search, Plus, Filter, Columns, RotateCcw, HelpCircle, LayoutList } from 'lucide-react';
+import { 
+  SearchRounded, 
+  AddRounded, 
+  FilterListRounded, 
+  ViewColumnRounded, 
+  RestartAltRounded, 
+  HelpOutlineRounded, 
+  ViewListRounded 
+} from '@mui/icons-material';
 import { AppButton } from '@/components';
 
 interface GridToolbarProps {
@@ -39,7 +47,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <Search size={16} color="#64748b" />
+                  <SearchRounded sx={{ fontSize: 16, color: "#64748b" }} />
                 </InputAdornment>
               ),
               sx: { height: 32, fontSize: '0.875rem', maxWidth: 300, bgcolor: 'background.default' }
@@ -51,7 +59,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
             variant="text" 
             size="small" 
             color="secondary" 
-            startIcon={<Filter size={14} />}
+            startIcon={<FilterListRounded sx={{ fontSize: 14 }} />}
             onClick={onFiltersClick}
             aria-label="Toggle filters panel"
             sx={{ height: 32, fontWeight: 600, color: 'text.secondary' }}
@@ -63,7 +71,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
             variant="text" 
             size="small" 
             color="secondary" 
-            startIcon={<Columns size={14} />}
+            startIcon={<ViewColumnRounded sx={{ fontSize: 14 }} />}
             onClick={onColumnsClick}
             aria-label="Toggle column settings"
             sx={{ height: 32, fontWeight: 600, color: 'text.secondary' }}
@@ -78,7 +86,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
               sx={{ color: 'text.secondary' }}
               aria-label="Reset grid layout and filters"
             >
-              <RotateCcw size={14} />
+              <RestartAltRounded sx={{ fontSize: 14 }} />
             </IconButton>
           </Tooltip>
         </Stack>
@@ -91,7 +99,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
           {onDocsClick && (
             <Tooltip title="Documentation">
               <IconButton size="small" onClick={onDocsClick} sx={{ color: 'text.secondary' }}>
-                <HelpCircle size={16} />
+                <HelpOutlineRounded sx={{ fontSize: 16 }} />
               </IconButton>
             </Tooltip>
           )}
@@ -99,7 +107,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
           {onConfigClick && (
             <Tooltip title="View Page Config">
               <IconButton size="small" onClick={onConfigClick} sx={{ color: 'text.secondary' }}>
-                <LayoutList size={16} />
+                <ViewListRounded sx={{ fontSize: 16 }} />
               </IconButton>
             </Tooltip>
           )}
@@ -108,7 +116,7 @@ export const GridToolbar: React.FC<GridToolbarProps> = ({
             <AppButton 
               variant="contained" 
               size="small" 
-              startIcon={<Plus size={16} />}
+              startIcon={<AddRounded sx={{ fontSize: 16 }} />}
               onClick={onAddClick}
               sx={{ height: 32, px: 2 }}
             >

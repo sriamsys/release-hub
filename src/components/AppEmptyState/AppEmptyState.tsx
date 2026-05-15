@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Typography, Stack, Paper } from '@mui/material';
-import { LucideIcon } from 'lucide-react';
+import { SvgIconComponent } from '@mui/icons-material';
 
 interface AppEmptyStateProps {
-  icon?: LucideIcon;
+  icon?: SvgIconComponent;
   title: string;
   description?: string;
   action?: React.ReactNode;
@@ -33,7 +33,7 @@ export const AppEmptyState: React.FC<AppEmptyStateProps> = ({
         minHeight: 300
       }}
     >
-      {Icon && <Icon size={48} style={{ marginBottom: '16px', color: '#94a3b8' }} />}
+      {Icon && <Icon sx={{ fontSize: 48, mb: 2, color: '#94a3b8' }} />}
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>

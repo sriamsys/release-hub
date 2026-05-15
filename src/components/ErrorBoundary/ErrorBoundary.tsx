@@ -1,6 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Box, Typography, Button, Paper, Stack } from '@mui/material';
-import { AlertCircle, RefreshCcw } from 'lucide-react';
+import { ErrorRounded, RefreshRounded } from '@mui/icons-material';
 
 interface Props {
   children?: ReactNode;
@@ -39,7 +39,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <Paper variant="outlined" sx={{ p: 4, maxWidth: 500, textAlign: 'center', borderRadius: 4 }}>
             <Stack spacing={3} alignItems="center">
               <Box sx={{ p: 2, borderRadius: '50%', bgcolor: 'error.light', color: 'error.main' }}>
-                <AlertCircle size={48} />
+                <ErrorRounded sx={{ fontSize: 48 }} />
               </Box>
               <Box>
                 <Typography variant="h5" fontWeight={800} gutterBottom>Something went wrong</Typography>
@@ -57,7 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <Stack direction="row" spacing={2}>
                 <Button 
                   variant="outlined" 
-                  startIcon={<RefreshCcw size={18} />}
+                  startIcon={<RefreshRounded sx={{ fontSize: 18 }} />}
                   onClick={() => window.location.reload()}
                 >
                   Retry Session

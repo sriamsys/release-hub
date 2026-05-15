@@ -3,7 +3,7 @@ import {
   Dialog, DialogTitle, DialogContent, DialogActions, Typography, 
   Button, Stack, Box 
 } from '@mui/material';
-import { AlertTriangle } from 'lucide-react';
+import { WarningRounded } from '@mui/icons-material';
 
 interface DeleteConfirmationModalProps {
   open: boolean;
@@ -23,7 +23,7 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
       <DialogTitle sx={{ py: 3 }}>
         <Stack direction="row" spacing={2} alignItems="center">
           <Box sx={{ p: 1, borderRadius: '50%', bgcolor: 'error.light', color: 'error.main', display: 'flex' }}>
-            <AlertTriangle size={24} />
+            <WarningRounded sx={{ fontSize: 24 }} />
           </Box>
           <Typography variant="h6" fontWeight={700}>Delete Release?</Typography>
         </Stack>

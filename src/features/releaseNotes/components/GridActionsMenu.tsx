@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
-import { MoreHorizontal, Eye, Edit2, Copy, Trash2 } from 'lucide-react';
+import { MoreHorizRounded, VisibilityRounded, EditRounded, ContentCopyRounded, DeleteRounded } from '@mui/icons-material';
 
 interface GridActionsMenuProps {
   onView: () => void;
@@ -30,7 +30,7 @@ export const GridActionsMenu: React.FC<GridActionsMenuProps> = ({
     <>
       <Tooltip title="Actions">
         <IconButton size="small" onClick={handleClick}>
-          <MoreHorizontal size={18} />
+          <MoreHorizRounded sx={{ fontSize: 18 }} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -44,19 +44,19 @@ export const GridActionsMenu: React.FC<GridActionsMenuProps> = ({
         }}
       >
         <MenuItem onClick={() => { onView(); handleClose(); }}>
-          <ListItemIcon><Eye size={16} /></ListItemIcon>
+          <ListItemIcon><VisibilityRounded sx={{ fontSize: 16 }} /></ListItemIcon>
           <ListItemText primaryTypographyProps={{ variant: 'body2' }}>View</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => { onEdit(); handleClose(); }}>
-          <ListItemIcon><Edit2 size={16} /></ListItemIcon>
+          <ListItemIcon><EditRounded sx={{ fontSize: 16 }} /></ListItemIcon>
           <ListItemText primaryTypographyProps={{ variant: 'body2' }}>Edit</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => { onDuplicate(); handleClose(); }}>
-          <ListItemIcon><Copy size={16} /></ListItemIcon>
+          <ListItemIcon><ContentCopyRounded sx={{ fontSize: 16 }} /></ListItemIcon>
           <ListItemText primaryTypographyProps={{ variant: 'body2' }}>Duplicate</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => { onDelete(); handleClose(); }} sx={{ color: 'error.main' }}>
-          <ListItemIcon><Trash2 size={16} color="currentColor" /></ListItemIcon>
+          <ListItemIcon><DeleteRounded sx={{ fontSize: 16, color: "currentColor" }} /></ListItemIcon>
           <ListItemText primaryTypographyProps={{ variant: 'body2' }}>Delete</ListItemText>
         </MenuItem>
       </Menu>

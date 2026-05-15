@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Typography, Box } from '@mui/material';
-import { X } from 'lucide-react';
+import { CloseRounded } from '@mui/icons-material';
 
 interface AppDialogProps {
   open: boolean;
@@ -44,7 +44,7 @@ export const AppDialog: React.FC<AppDialogProps> = ({
           sx={{ color: (theme) => theme.palette.grey[500] }}
           size="small"
         >
-          <X size={20} />
+          <CloseRounded sx={{ fontSize: 20 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent dividers sx={{ p: 3 }}>

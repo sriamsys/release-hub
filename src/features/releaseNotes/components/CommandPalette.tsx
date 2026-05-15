@@ -3,7 +3,14 @@ import {
   Dialog, Box, InputBase, List, ListItemButton, ListItemIcon, 
   ListItemText, Typography, Divider, Stack, Chip, Fade
 } from '@mui/material';
-import { Search, Rocket, Plus, Settings, FileText, Command } from 'lucide-react';
+import { 
+  SearchRounded, 
+  CampaignRounded, 
+  AddRounded, 
+  SettingsRounded, 
+  DescriptionRounded, 
+  KeyboardCommandKeyRounded 
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReleaseNote } from '../types';
@@ -24,9 +31,9 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, o
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const actions = [
-    { id: 'new', title: 'New Release', icon: <Plus size={18} />, group: 'Actions', shortcut: 'N' },
-    { id: 'docs', title: 'View Documentation', icon: <FileText size={18} />, group: 'Support' },
-    { id: 'settings', title: 'System Settings', icon: <Settings size={18} />, group: 'Admin' },
+    { id: 'new', title: 'New Release', icon: <AddRounded sx={{ fontSize: 18 }} />, group: 'Actions', shortcut: 'N' },
+    { id: 'docs', title: 'View Documentation', icon: <DescriptionRounded sx={{ fontSize: 18 }} />, group: 'Support' },
+    { id: 'settings', title: 'System Settings', icon: <SettingsRounded sx={{ fontSize: 18 }} />, group: 'Admin' },
   ];
 
   useEffect(() => {
@@ -88,7 +95,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, o
       }}
     >
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-        <Search size={20} color="#64748b" />
+        <SearchRounded sx={{ fontSize: 20, color: "#64748b" }} />
         <InputBase 
           id="command-palette-search"
           placeholder="Search releases, actions, or docs..." 
@@ -144,7 +151,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, o
                   }}
                 >
                   <ListItemIcon sx={{ minWidth: 40 }}>
-                    {item.icon || <Rocket size={18} />}
+                    {item.icon || <CampaignRounded sx={{ fontSize: 18 }} />}
                   </ListItemIcon>
                   <ListItemText 
                     primary={item.title} 
@@ -163,11 +170,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ open, onClose, o
       <Box sx={{ p: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: 'action.hover', borderTop: '1px solid', borderColor: 'divider' }}>
         <Stack direction="row" spacing={2}>
           <Stack direction="row" spacing={0.5} alignItems="center">
-            <Command size={12} />
+            <KeyboardCommandKeyRounded sx={{ fontSize: 12 }} />
             <Typography variant="caption">Navigate</Typography>
           </Stack>
           <Stack direction="row" spacing={0.5} alignItems="center">
-            <Command size={12} />
+            <KeyboardCommandKeyRounded sx={{ fontSize: 12 }} />
             <Typography variant="caption">Select</Typography>
           </Stack>
         </Stack>

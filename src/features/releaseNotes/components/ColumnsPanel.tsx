@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Switch, Stack, Button } from '@mui/material';
 import { AppSlideOver } from '@/components';
-import { GripVertical } from 'lucide-react';
+import { DragIndicatorRounded } from '@mui/icons-material';
 
 interface ColumnsPanelProps {
   open: boolean;
@@ -53,7 +53,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({ open, onClose }) => 
             }
           >
             <Box sx={{ mr: 1, color: 'text.disabled', display: 'flex' }}>
-              <GripVertical size={16} />
+              <DragIndicatorRounded sx={{ fontSize: 16 }} />
             </Box>
             <ListItemText 
               primary={col.label} 

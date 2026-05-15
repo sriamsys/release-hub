@@ -6,9 +6,19 @@ import Placeholder from '@tiptap/extension-placeholder';
 import React from 'react';
 import { Box, ToggleButton, ToggleButtonGroup, Divider, styled, Tooltip, IconButton } from '@mui/material';
 import { 
-  Bold, Italic, Underline as UnderlineIcon, List, ListOrdered, 
-  Quote, Code, Heading1, Heading2, Link as LinkIcon, Undo, Redo 
-} from 'lucide-react';
+  FormatBoldRounded, 
+  FormatItalicRounded, 
+  FormatUnderlinedRounded, 
+  FormatListBulletedRounded, 
+  FormatListNumberedRounded, 
+  FormatQuoteRounded, 
+  CodeRounded, 
+  LooksOneRounded, 
+  LooksTwoRounded, 
+  LinkRounded, 
+  UndoRounded, 
+  RedoRounded 
+} from '@mui/icons-material';
 
 const EditorWrapper = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -86,7 +96,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('bold')}
               onClick={() => editor.chain().focus().toggleBold().run()}
             >
-              <Bold size={16} />
+              <FormatBoldRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
           <Tooltip title="Italic">
@@ -95,7 +105,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('italic')}
               onClick={() => editor.chain().focus().toggleItalic().run()}
             >
-              <Italic size={16} />
+              <FormatItalicRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
           <Tooltip title="Underline">
@@ -104,7 +114,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('underline')}
               onClick={() => editor.chain().focus().toggleUnderline().run()}
             >
-              <UnderlineIcon size={16} />
+              <FormatUnderlinedRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>
@@ -118,7 +128,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('heading', { level: 1 })}
               onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
             >
-              <Heading1 size={16} />
+              <LooksOneRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
           <Tooltip title="Heading 2">
@@ -127,7 +137,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('heading', { level: 2 })}
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
             >
-              <Heading2 size={16} />
+              <LooksTwoRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>
@@ -141,7 +151,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('bulletList')}
               onClick={() => editor.chain().focus().toggleBulletList().run()}
             >
-              <List size={16} />
+              <FormatListBulletedRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
           <Tooltip title="Ordered List">
@@ -150,7 +160,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('orderedList')}
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
             >
-              <ListOrdered size={16} />
+              <FormatListNumberedRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>
@@ -164,7 +174,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('blockquote')}
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
             >
-              <Quote size={16} />
+              <FormatQuoteRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
           <Tooltip title="Code Block">
@@ -173,17 +183,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
               selected={editor.isActive('codeBlock')}
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             >
-              <Code size={16} />
+              <CodeRounded sx={{ fontSize: 18 }} />
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>
 
         <Box sx={{ ml: 'auto', display: 'flex', gap: 0.5 }}>
           <IconButton size="small" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
-            <Undo size={16} />
+            <UndoRounded sx={{ fontSize: 18 }} />
           </IconButton>
           <IconButton size="small" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
-            <Redo size={16} />
+            <RedoRounded sx={{ fontSize: 18 }} />
           </IconButton>
         </Box>
       </ToolbarContainer>
