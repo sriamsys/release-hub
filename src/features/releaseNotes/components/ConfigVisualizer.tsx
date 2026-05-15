@@ -62,6 +62,13 @@ export const ConfigVisualizer: React.FC<ConfigVisualizerProps> = ({ config, open
           <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2, bgcolor: '#0f172a' }}>
             <Typography
               component="pre"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(config, null, 2)
+                  .replace(/"(\w+)":/g, '<span class="key">"$1"</span>:')
+                  .replace(/: "(.*?)"/g, ': <span class="string">"$1"</span>')
+                  .replace(/: (true|false)/g, ': <span class="boolean">$1</span>')
+                  .replace(/: (\d+)/g, ': <span class="number">$1</span>')
+              }}
               sx={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.75rem',
@@ -73,13 +80,7 @@ export const ConfigVisualizer: React.FC<ConfigVisualizerProps> = ({ config, open
                 '& .boolean': { color: '#fb7185' },
                 '& .number': { color: '#fcd34d' },
               }}
-            >
-              {JSON.stringify(config, null, 2)
-                .replace(/"(\w+)":/g, '<span class="key">"$1"</span>:')
-                .replace(/: "(.*?)"/g, ': <span class="string">"$1"</span>')
-                .replace(/: (true|false)/g, ': <span class="boolean">$1</span>')
-                .replace(/: (\d+)/g, ': <span class="number">$1</span>')}
-            </Typography>
+            />
           </Box>
           <Box sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider' }}>
             <Typography variant="caption" color="text.secondary">

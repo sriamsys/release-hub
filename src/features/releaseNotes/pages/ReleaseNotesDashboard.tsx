@@ -293,6 +293,7 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
         open={viewerOpen} 
         onClose={() => {
           setViewerOpen(false);
+          setSelectedNote(null);
           navigate('/release-notes');
         }}
         note={selectedNote}

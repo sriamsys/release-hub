@@ -85,7 +85,7 @@ export const ReleaseEditorModal: React.FC<ReleaseEditorModalProps> = ({
     if (!validate()) return;
 
     const finalNote: ReleaseNote = {
-      id: formData.id || crypto.randomUUID(),
+      id: formData.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 11)),
       title: formData.title || '',
       version: formData.version || '',
       audience: formData.audience as ReleaseAudience,
