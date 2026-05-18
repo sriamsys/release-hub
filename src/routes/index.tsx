@@ -9,6 +9,7 @@ import {
   AdvancedConfigPage, 
   EnterpriseDemoPage 
 } from '@/features/releaseNotes/pages';
+import { FaqDashboard, FaqHelpCenter } from '@/features/faqs/pages';
 
 // Placeholder Pages
 const Dashboard = () => (
@@ -44,6 +45,8 @@ export const AppRoutes: React.FC = () => {
         <Route path="enterprise-demo" element={<EnterpriseDemoPage />} />
         <Route path="docs" element={<Docs />} />
         <Route path="config" element={<Config />} />
+        <Route path="faqs" element={<FaqDashboard />} />
+        <Route path="help" element={<FaqHelpCenter />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

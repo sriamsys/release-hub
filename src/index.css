@@ -61,3 +61,17 @@
   text-decoration: underline !important;
   color: #1d4ed8 !important;
 }
+
+/* AG Grid Drop Target Styles */
+.drop-target-above {
+  border-top: 2px solid #3b82f6 !important;
+}
+
+.drop-target-below {
+  border-bottom: 2px solid #3b82f6 !important;
+}
+
+.drop-target-inside {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  border: 1px dashed #3b82f6 !important;
+}

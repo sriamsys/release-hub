@@ -2,16 +2,13 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ColDef, GridReadyEvent, RowClickedEvent, GridApi } from 'ag-grid-community';
-import { AppSectionHeader, AppGrid, AppStatusChip } from '@/components';
+import { AppSectionHeader, AppGrid, AppStatusChip, AppGridToolbar, AppGridActionsMenu, AppDeleteConfirmationModal } from '@/components';
 import { useReleaseNotes } from '../hooks/useReleaseNotes';
 import { useGridPersistence } from '@/hooks/useGridPersistence';
-import { GridToolbar } from '../components/GridToolbar';
 import { FiltersPanel } from '../components/FiltersPanel';
 import { ColumnsPanel } from '../components/ColumnsPanel';
 import { ReleaseEditorModal } from '../components/ReleaseEditorModal';
 import { ReleaseViewerModal } from '../components/ReleaseViewerModal';
-import { DeleteConfirmationModal } from '../components/DeleteConfirmationModal';
-import { GridActionsMenu } from '../components/GridActionsMenu';
 import { ReleaseNote } from '../types';
 import { generateNextVersion } from '../utils/versioning';
 
@@ -214,10 +211,9 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
       filter: false,
       resizable: false,
       cellRenderer: (params: any) => (
-        <GridActionsMenu 
+        <AppGridActionsMenu 
           onView={() => navigate(`/release-notes/${params.data.version}`)}
           onEdit={() => handleEdit(params.data)}
-          onDuplicate={() => config.features.duplicateRelease && handleDuplicate(params.data)}
           onDelete={() => config.features.deleteRelease && setDeleteId(params.data.id)}
         />
       )
@@ -234,12 +230,14 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
       
       <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
         <Paper variant="outlined" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 2 }}>
-          <GridToolbar 
+          <AppGridToolbar 
+            searchPlaceholder="Search releases..."
             onSearchChange={handleSearch}
             onFiltersClick={() => setShowFilters(true)}
             onColumnsClick={() => setShowColumns(true)}
             onResetClick={handleReset}
             onAddClick={handleAdd}
+            addLabel="Create Release"
             onDocsClick={config.ui.showDocs ? () => setShowDocs(true) : undefined}
             onConfigClick={config.ui.showConfig ? () => setShowConfig(true) : undefined}
             totalCount={notes.filter(n => n.title.toLowerCase().includes(searchText.toLowerCase())).length}
@@ -299,7 +297,7 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
         note={selectedNote}
       />
 
-      <DeleteConfirmationModal 
+      <AppDeleteConfirmationModal 
         open={!!deleteId} 
         onClose={() => setDeleteId(null)} 
         onConfirm={handleConfirmDelete}

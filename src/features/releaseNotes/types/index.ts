@@ -1,9 +1,10 @@
-export type ReleaseAudience = 'All' | 'Managers' | 'HR' | 'Engineering' | 'Admin';
-export type ReleaseType = 'Feature' | 'Enhancement' | 'Bug Fix' | 'Security' | 'Infrastructure';
-export type ReleaseStatus = 'Draft' | 'Published' | 'Internal' | 'Deprecated';
+import { BaseEntity, CommonStatus, CommonAudience } from '@/types/common';
 
-export interface ReleaseNote {
-  id: string;
+export type ReleaseAudience = CommonAudience;
+export type ReleaseType = 'Feature' | 'Enhancement' | 'Bug Fix' | 'Security' | 'Infrastructure';
+export type ReleaseStatus = CommonStatus;
+
+export interface ReleaseNote extends BaseEntity {
   version: string;
   title: string;
   description: string;
@@ -11,10 +12,8 @@ export interface ReleaseNote {
   audience: ReleaseAudience;
   releaseType: ReleaseType;
   status: ReleaseStatus;
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
-  tags: string[];
-  pinned: boolean;
-  featured: boolean;
+  // Appearance customization
+  heroStyle?: 'solid' | 'image';
+  heroColor?: string;
+  heroImage?: string;
 }

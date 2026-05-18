@@ -135,36 +135,45 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
               {/* Branded Hero Section */}
               <Box sx={{ 
                 position: 'relative', 
-                bgcolor: '#0f172a',
+                bgcolor: displayNote.heroStyle === 'solid' ? (displayNote.heroColor || '#2563EB') : '#0f172a',
+                backgroundImage: displayNote.heroStyle === 'image' 
+                  ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${displayNote.heroImage || 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=200&auto=format&fit=crop'})` 
+                  : `linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.1) 100%)`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 color: 'white',
                 pt: { xs: 8, md: 10 },
                 pb: { xs: 10, md: 14 },
                 px: { xs: 3, md: 6 },
                 overflow: 'hidden',
-                background: 'linear-gradient(145deg, #1e293b 0%, #0f172a 100%)'
+                transition: 'all 0.5s ease'
               }}>
-                {/* Background Decorative Elements */}
-                <Box sx={{ 
-                  position: 'absolute', 
-                  top: -100, 
-                  right: -50, 
-                  width: 400, 
-                  height: 400, 
-                  borderRadius: '50%', 
-                  background: 'radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%)',
-                  zIndex: 0
-                }} />
-                <Box sx={{ 
-                  position: 'absolute', 
-                  bottom: -20, 
-                  left: '10%', 
-                  width: 300, 
-                  height: 300, 
-                  bgcolor: 'primary.main',
-                  opacity: 0.03,
-                  filter: 'blur(100px)',
-                  zIndex: 0
-                }} />
+                {/* Background Decorative Elements - Only show on solid style for subtle texture */}
+                {displayNote.heroStyle === 'solid' && (
+                  <>
+                    <Box sx={{ 
+                      position: 'absolute', 
+                      top: -100, 
+                      right: -50, 
+                      width: 400, 
+                      height: 400, 
+                      borderRadius: '50%', 
+                      background: 'radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
+                      zIndex: 0
+                    }} />
+                    <Box sx={{ 
+                      position: 'absolute', 
+                      bottom: -20, 
+                      left: '10%', 
+                      width: 300, 
+                      height: 300, 
+                      bgcolor: 'white',
+                      opacity: 0.05,
+                      filter: 'blur(100px)',
+                      zIndex: 0
+                    }} />
+                  </>
+                )}
                 
                 {/* Geometric Angled Cut */}
                 <Box sx={{ 
@@ -293,10 +302,19 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                               </Stack>
                             </Box>
 
-                            <Box sx={{ p: 2, bgcolor: 'primary.light', borderRadius: 2, color: 'primary.contrastText', position: 'relative', overflow: 'hidden' }}>
+                            <Box sx={{ 
+                              p: 2, 
+                              bgcolor: displayNote.heroStyle === 'solid' ? `${displayNote.heroColor}15` : 'primary.light', 
+                              borderRadius: 2, 
+                              color: displayNote.heroStyle === 'solid' ? (displayNote.heroColor || 'primary.main') : 'primary.contrastText',
+                              position: 'relative', 
+                              overflow: 'hidden',
+                              border: displayNote.heroStyle === 'solid' ? '1px solid' : 'none',
+                              borderColor: `${displayNote.heroColor}30`
+                            }}>
                               <CampaignRounded sx={{ fontSize: 40, position: 'absolute', right: -10, bottom: -10, opacity: 0.1, transform: 'rotate(-20deg)' }} />
                               <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>Executive Summary</Typography>
-                              <Typography variant="caption" sx={{ lineHeight: 1.5, opacity: 0.9, display: 'block' }}>
+                              <Typography variant="caption" sx={{ lineHeight: 1.5, opacity: 0.9, display: 'block', color: 'text.primary' }}>
                                 {displayNote.description}
                               </Typography>
                             </Box>

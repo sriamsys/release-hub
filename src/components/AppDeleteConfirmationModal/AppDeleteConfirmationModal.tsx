@@ -5,18 +5,22 @@ import {
 } from '@mui/material';
 import { WarningRounded } from '@mui/icons-material';
 
-interface DeleteConfirmationModalProps {
+interface AppDeleteConfirmationModalProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
+  itemName?: string;
+  message?: string;
 }
 
-export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
+export const AppDeleteConfirmationModal: React.FC<AppDeleteConfirmationModalProps> = ({
   open,
   onClose,
   onConfirm,
-  title
+  title,
+  itemName = 'this item',
+  message
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
@@ -25,12 +29,16 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
           <Box sx={{ p: 1, borderRadius: '50%', bgcolor: 'error.light', color: 'error.main', display: 'flex' }}>
             <WarningRounded sx={{ fontSize: 24 }} />
           </Box>
-          <Typography variant="h6" fontWeight={700}>Delete Release?</Typography>
+          <Typography variant="h6" fontWeight={700}>{title}</Typography>
         </Stack>
       </DialogTitle>
       <DialogContent>
         <Typography variant="body2" color="text.secondary">
-          Are you sure you want to delete <strong>{title}</strong>? This action cannot be undone and will permanently remove the release documentation.
+          {message || (
+            <>
+              Are you sure you want to delete <strong>{itemName}</strong>? This action cannot be undone.
+            </>
+          )}
         </Typography>
       </DialogContent>
       <DialogActions sx={{ p: 3 }}>

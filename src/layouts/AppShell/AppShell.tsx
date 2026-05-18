@@ -7,16 +7,20 @@ import {
   SettingsRounded, 
   MenuBookRounded, 
   ChevronLeftRounded, 
-  ChevronRightRounded 
+  ChevronRightRounded,
+  HelpCenterRounded
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import { NotificationBannerContainer } from '@/features/notifications/components/NotificationBannerContainer';
 
 const DRAWER_WIDTH = 260;
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: <DashboardRounded sx={{ fontSize: 18 }} />, path: '/' },
   { label: 'Release Notes', icon: <CampaignRounded sx={{ fontSize: 18 }} />, path: '/release-notes' },
+  { label: 'Help Center', icon: <HelpCenterRounded sx={{ fontSize: 18 }} />, path: '/help' },
+  { label: 'Knowledge Base', icon: <MenuBookRounded sx={{ fontSize: 18 }} />, path: '/faqs' },
 ];
 
 const DEMO_ITEMS = [
@@ -190,6 +194,7 @@ export const AppShell: React.FC = () => {
           flexDirection: 'column'
         }}
       >
+        <NotificationBannerContainer />
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
