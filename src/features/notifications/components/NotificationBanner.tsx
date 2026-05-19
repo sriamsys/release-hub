@@ -93,17 +93,17 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({ notifica
         elevation={0}
         sx={{
           mb: 1,
-          p: 1.5,
+          p: 0, // Padding handled by children
           borderRadius: 2,
           border: '1px solid',
           borderColor: colors.border,
           bgcolor: colors.bg,
           position: 'relative',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: 'stretch',
           width: '100%',
           overflow: 'hidden',
+          minHeight: 60,
           ...(colors.isStrong && {
             animation: 'pulseOutage 2s infinite cubic-bezier(0.4, 0, 0.6, 1)',
             '@keyframes pulseOutage': {
@@ -113,7 +113,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({ notifica
           })
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2, px: notification.dismissible ? 4 : 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, gap: 2, py: 1.5, pl: 2, pr: 6 }}>
           <Box sx={{ color: colors.icon, display: 'flex' }}>
             {getIcon(notification.type)}
           </Box>
@@ -131,23 +131,32 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({ notifica
               </Typography>
             )}
           </Box>
-
-          {notification.dismissible && (
-            <IconButton 
-              size="small" 
-              onClick={() => onDismiss(notification.id)}
-              sx={{ 
-                position: 'absolute', 
-                right: 8, 
-                color: colors.isStrong ? 'white' : 'inherit',
-                opacity: 0.7,
-                '&:hover': { opacity: 1 }
-              }}
-            >
-              <CloseRounded fontSize="small" />
-            </IconButton>
-          )}
         </Box>
+
+        <IconButton 
+          size="small" 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDismiss(notification.id);
+          }}
+          sx={{ 
+            position: 'absolute', 
+            top: '50%',
+            right: 8, 
+            transform: 'translateY(-50%)',
+            color: colors.isStrong ? 'white' : 'inherit',
+            opacity: 0.7,
+            '&:hover': { 
+              opacity: 1,
+              bgcolor: colors.isStrong ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+            },
+            zIndex: 10 // Higher z-index
+          }}
+          aria-label="Dismiss notification"
+        >
+          <CloseRounded fontSize="small" />
+        </IconButton>
       </Paper>
     </motion.div>
   );

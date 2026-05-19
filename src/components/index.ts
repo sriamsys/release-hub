@@ -12,4 +12,5 @@ export * from './ErrorBoundary/ErrorBoundary';
 export * from './AppDeleteConfirmationModal/AppDeleteConfirmationModal';
 export * from './AppGridActionsMenu/AppGridActionsMenu';
 export * from './AppFullscreenEditor/AppFullscreenEditor';
+export * from './AppFullscreenDialog/AppFullscreenContext';
 export * from './AppGridToolbar/AppGridToolbar';

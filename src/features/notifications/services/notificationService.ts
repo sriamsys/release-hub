@@ -67,16 +67,19 @@ export const notificationService = {
   },
 
   markAsDismissed: (id: string, persist: boolean = false): void => {
+    const now = new Date().toISOString();
+    const state = notificationService.getSessionState();
+
     if (persist) {
       const persisted = notificationService.getPersistentDismissedIds();
       if (!persisted.includes(id)) {
         notificationService.updatePersistentDismissedIds([...persisted, id]);
       }
     } else {
-      const state = notificationService.getSessionState();
       if (!state.dismissedIds.includes(id)) {
         notificationService.updateSessionState({
-          dismissedIds: [...state.dismissedIds, id]
+          dismissedIds: [...state.dismissedIds, id],
+          lastShownAt: { ...state.lastShownAt, [id]: now }
         });
       }
     }

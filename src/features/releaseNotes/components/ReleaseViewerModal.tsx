@@ -10,8 +10,8 @@ import {
   PersonRounded, 
   CampaignRounded, 
   LocalOfferRounded, 
-  OpenInFullRounded, 
-  CloseFullscreenRounded, 
+  OpenInFull, 
+  CloseFullscreen, 
   CheckRounded, 
   PrintRounded, 
   ShareRounded 
@@ -60,15 +60,15 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
         if (reason === 'backdropClick' || reason === 'escapeKeyDown') return;
         onClose();
       }}
-      maxWidth={isFullscreen ? false : 'lg'}
+      maxWidth={false}
       fullWidth={true}
-      fullScreen={isFullscreen}
       disableEscapeKeyDown
       PaperProps={{
         sx: { 
           borderRadius: isFullscreen ? 0 : 4,
-          height: isFullscreen ? '100vh' : '90vh',
-          maxHeight: isFullscreen ? '100vh' : '90vh',
+          width: isFullscreen ? '98vw' : '70vw',
+          height: isFullscreen ? '96vh' : '80vh',
+          maxHeight: '96vh',
           bgcolor: 'background.default',
           backgroundImage: 'none',
           boxShadow: isFullscreen ? 'none' : '0 30px 60px -12px rgba(0,0,0,0.3)',
@@ -77,7 +77,8 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
           flexDirection: 'column',
           overflow: 'hidden',
           border: isFullscreen ? 'none' : '1px solid',
-          borderColor: 'divider'
+          borderColor: 'divider',
+          m: 'auto'
         }
       }}
       slotProps={{
@@ -114,7 +115,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                   '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.2)' }
                 }}
               >
-                {isFullscreen ? <CloseFullscreenRounded sx={{ fontSize: 18 }} /> : <OpenInFullRounded sx={{ fontSize: 18 }} />}
+                {isFullscreen ? <CloseFullscreen sx={{ fontSize: 18 }} /> : <OpenInFull sx={{ fontSize: 18 }} />}
               </IconButton>
             </Tooltip>
             <IconButton 

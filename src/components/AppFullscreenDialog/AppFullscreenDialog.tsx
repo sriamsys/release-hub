@@ -1,9 +1,10 @@
 import React from 'react';
 import { Dialog, AppBar, Toolbar, IconButton, Typography, Slide, Box, Stack } from '@mui/material';
-import { CloseRounded, OpenInFullRounded } from '@mui/icons-material';
+import { CloseRounded, OpenInFull, CloseFullscreen } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 import { motion, AnimatePresence } from 'motion/react';
 import { SPRINGS, VARIANTS } from '@/constants/motion';
+import { AppFullscreenProvider, useAppFullscreen } from './AppFullscreenContext';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -30,25 +31,43 @@ interface AppFullscreenDialogProps {
   action?: React.ReactNode;
 }
 
-/**
- * Standardized fullscreen dialog for complex workflows (e.g. Rich Text Editing)
- * Enhanced with spring motions and premium typography.
- */
-export const AppFullscreenDialog: React.FC<AppFullscreenDialogProps> = ({ 
+const FullscreenDialogContent: React.FC<AppFullscreenDialogProps> = ({ 
   open, 
   onClose, 
   title, 
   children,
   action
 }) => {
+  const { isMaximized, toggleMaximize } = useAppFullscreen();
+
   return (
     <Dialog
-      fullScreen
       open={open}
-      onClose={onClose}
+      onClose={(event, reason) => {
+        if (reason === 'backdropClick') return;
+        onClose();
+      }}
       TransitionComponent={Transition}
+      maxWidth={false}
+      fullWidth
       PaperProps={{
-        sx: { bgcolor: 'background.default' }
+        sx: { 
+          bgcolor: 'background.default',
+          width: isMaximized ? '98vw' : '70vw',
+          height: isMaximized ? '96vh' : '80vh',
+          maxHeight: '96vh',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          m: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          borderRadius: isMaximized ? 0 : 3
+        }
+      }}
+      slotProps={{
+        backdrop: {
+          sx: { backdropFilter: 'blur(4px)', bgcolor: 'rgba(0,0,0,0.4)' }
+        }
       }}
     >
       <AppBar sx={{ position: 'relative', bgcolor: 'background.paper', color: 'text.primary', borderBottom: '1px solid', borderColor: 'divider', boxShadow: 'none' }}>
@@ -63,7 +82,9 @@ export const AppFullscreenDialog: React.FC<AppFullscreenDialogProps> = ({
             <CloseRounded sx={{ fontSize: 20 }} />
           </IconButton>
           <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flex: 1 }}>
-            <OpenInFullRounded sx={{ fontSize: 16, color: "#64748b" }} />
+            <IconButton size="small" onClick={(e) => { e.stopPropagation(); toggleMaximize(); }} sx={{ color: "text.secondary" }}>
+              {isMaximized ? <CloseFullscreen sx={{ fontSize: 18 }} /> : <OpenInFull sx={{ fontSize: 18 }} />}
+            </IconButton>
             <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', letterSpacing: '-0.01em' }} variant="h6">
               {title}
             </Typography>
@@ -71,15 +92,15 @@ export const AppFullscreenDialog: React.FC<AppFullscreenDialogProps> = ({
           {action && <Box>{action}</Box>}
         </Toolbar>
       </AppBar>
-      <Box sx={{ flexGrow: 1, overflowY: 'auto', p: { xs: 2, md: 6 }, bgcolor: 'background.default' }}>
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', bgcolor: 'background.default' }}>
         <AnimatePresence mode="wait">
           {open && (
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 30 }}
+              exit={{ opacity: 0, y: 20 }}
               transition={SPRINGS.gentle}
-              style={{ height: '100%' }}
+              style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
             >
               {children}
             </motion.div>
@@ -87,5 +108,13 @@ export const AppFullscreenDialog: React.FC<AppFullscreenDialogProps> = ({
         </AnimatePresence>
       </Box>
     </Dialog>
+  );
+};
+
+export const AppFullscreenDialog: React.FC<AppFullscreenDialogProps> = (props) => {
+  return (
+    <AppFullscreenProvider>
+      <FullscreenDialogContent {...props} />
+    </AppFullscreenProvider>
   );
 };

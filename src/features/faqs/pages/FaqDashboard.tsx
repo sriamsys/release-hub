@@ -6,6 +6,7 @@ import { AppSectionHeader, AppGrid, AppStatusChip, AppGridToolbar, AppDeleteConf
 import { useFaqs } from '../hooks/useFaqs';
 import { useGridPersistence } from '@/hooks/useGridPersistence';
 import { FaqEditorModal } from '../components/FaqEditorModal';
+import { FaqViewerModal } from '../components/FaqViewerModal';
 import { FaqEntry } from '../types';
 
 export const FaqDashboard: React.FC = () => {
@@ -17,6 +18,7 @@ export const FaqDashboard: React.FC = () => {
   
   // Modals state
   const [editorOpen, setEditorOpen] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedFaq, setSelectedFaq] = useState<FaqEntry | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string, position: 'above' | 'below' | 'inside' } | null>(null);
@@ -185,6 +187,11 @@ export const FaqDashboard: React.FC = () => {
     setEditorOpen(true);
   }, []);
 
+  const handleView = useCallback((faq: FaqEntry) => {
+    setSelectedFaq(faq);
+    setViewerOpen(true);
+  }, []);
+
   const handleSaveFaq = useCallback((faq: FaqEntry) => {
     if (faqs.find(f => f.id === faq.id)) {
       updateFaq(faq);
@@ -276,12 +283,13 @@ export const FaqDashboard: React.FC = () => {
       resizable: false,
       cellRenderer: (params: any) => (
         <AppGridActionsMenu 
+          onView={() => handleView(params.data)}
           onEdit={() => handleEdit(params.data)}
           onDelete={() => setDeleteId(params.data.id)}
         />
       )
     }
-  ], [handleEdit]);
+  ], [handleEdit, handleView]);
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -339,6 +347,12 @@ export const FaqDashboard: React.FC = () => {
         onSave={handleSaveFaq}
         initialFaq={selectedFaq}
         allFaqs={faqs}
+      />
+
+      <FaqViewerModal 
+        open={viewerOpen} 
+        onClose={() => setViewerOpen(false)} 
+        faq={selectedFaq} 
       />
 
       <AppDeleteConfirmationModal 

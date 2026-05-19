@@ -8,11 +8,28 @@
   <body>
     <div id="root"></div>
     <script>
-      // Defensive fix for environments where window.fetch is read-only.
-      // This prevents polyfills like formdata-polyfill from attempting to reassign it.
-      if (typeof FormData !== 'undefined' && !FormData.prototype.keys) {
-        FormData.prototype.keys = function* () {};
-      }
+      (function() {
+        // Defensive fix for environments where window.fetch is a read-only getter.
+        // This prevents libraries like formdata-polyfill from crashing when attempting to patch it.
+        const originalFetch = window.fetch;
+        if (typeof originalFetch === 'function') {
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return originalFetch; },
+              set: function() { console.warn('[ReleaseHub] Suppressed attempt to overwrite read-only window.fetch'); },
+              configurable: true,
+              enumerable: true
+            });
+          } catch (e) {
+            // If even defineProperty fails (e.g. non-configurable), we just have to hope for the best
+          }
+        }
+
+        // Prevent formdata-polyfill from attempting the patch by satisfying its feature check
+        if (typeof FormData !== 'undefined' && !FormData.prototype.keys) {
+          FormData.prototype.keys = function* () {};
+        }
+      })();
     </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>

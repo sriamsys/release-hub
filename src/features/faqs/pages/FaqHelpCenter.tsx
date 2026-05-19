@@ -24,11 +24,16 @@ import {
   HistoryRounded,
   WhatshotRounded,
   CheckCircleRounded,
-  MenuBookRounded
+  MenuBookRounded,
+  SearchOffRounded,
+  OpenInFullRounded,
+  CampaignRounded
 } from '@mui/icons-material';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import { useFaqs } from '../hooks/useFaqs';
 import { FaqEntry } from '../types';
+import { FaqViewerModal } from '../components/FaqViewerModal';
+import { ReleaseFeed } from '@/features/releaseNotes/components/ReleaseFeed';
 import { AppStatusChip } from '@/components';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -137,14 +142,22 @@ const HelpSkeleton = () => (
 export const FaqHelpCenter: React.FC = () => {
   const { faqs, loading } = useFaqs();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { version } = useParams<{ version?: string }>();
+  const navigate = useNavigate();
   const searchInputRef = useRef<HTMLInputElement>(null);
   
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(searchParams.get('c'));
   const [expandedId, setExpandedId] = useState<string | null>(searchParams.get('id'));
-  const [activeTab, setActiveTab] = useState(0);
+  
+  // Determine active tab from URL or state
+  const isReleaseNotesPath = window.location.pathname.includes('release-notes');
+  const [activeTab, setActiveTab] = useState(isReleaseNotesPath ? 1 : 0);
   const [recentFaqs, setRecentFaqs] = useState<FaqEntry[]>([]);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
+  
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedFaq, setSelectedFaq] = useState<FaqEntry | null>(null);
 
   // Sync state to URL
   useEffect(() => {
@@ -202,6 +215,12 @@ export const FaqHelpCenter: React.FC = () => {
     navigator.clipboard.writeText(url.toString());
     setShowCopyAlert(true);
     setTimeout(() => setShowCopyAlert(false), 2000);
+  };
+
+  const handleOpenViewer = (e: React.MouseEvent, faq: FaqEntry) => {
+    e.stopPropagation();
+    setSelectedFaq(faq);
+    setViewerOpen(true);
   };
 
   const categories = useMemo(() => {
@@ -342,6 +361,7 @@ export const FaqHelpCenter: React.FC = () => {
               sx={{ minHeight: 48 }}
             >
               <Tab icon={<MenuBookRounded sx={{ fontSize: 18 }} />} iconPosition="start" label="Knowledge Base" sx={{ borderRadius: 2.5, px: 3, fontWeight: 700 }} />
+              <Tab icon={<CampaignRounded sx={{ fontSize: 18 }} />} iconPosition="start" label="Release Notes" sx={{ borderRadius: 2.5, px: 3, fontWeight: 700 }} />
               <Tab icon={<PlayCircleRounded sx={{ fontSize: 18 }} />} iconPosition="start" label="Video Tutorials" sx={{ borderRadius: 2.5, px: 3, fontWeight: 700 }} />
               <Tab icon={<LightbulbRounded sx={{ fontSize: 18 }} />} iconPosition="start" label="Getting Started" sx={{ borderRadius: 2.5, px: 3, fontWeight: 700 }} />
             </Tabs>
@@ -496,6 +516,11 @@ export const FaqHelpCenter: React.FC = () => {
                                   </Typography>
                                 </Stack>
                                 <Stack direction="row" spacing={1} className="faq-actions">
+                                  <Tooltip title="View Fullscreen">
+                                    <IconButton size="small" onClick={(e) => handleOpenViewer(e, faq)}>
+                                      <OpenInFullRounded sx={{ fontSize: 16 }} />
+                                    </IconButton>
+                                  </Tooltip>
                                   <Tooltip title="Copy Link">
                                     <IconButton size="small" onClick={(e) => copyFaqLink(e, faq.id)}>
                                       <ContentCopyRounded sx={{ fontSize: 16 }} />
@@ -636,13 +661,15 @@ export const FaqHelpCenter: React.FC = () => {
           </Grid>
 
         </Grid>
+      ) : activeTab === 1 ? (
+        <ReleaseFeed initialSearchQuery={searchQuery} />
       ) : (
         <Box sx={{ textAlign: 'center', py: 12 }}>
           <Paper variant="outlined" sx={{ maxWidth: 600, mx: 'auto', p: 6, borderRadius: 4 }}>
             <PlayCircleRounded sx={{ fontSize: 64, color: 'text.disabled', mb: 3 }} />
             <Typography variant="h5" gutterBottom sx={{ fontWeight: 800 }}>Coming Soon</Typography>
             <Typography color="text.secondary">
-              We're currently building our {activeTab === 1 ? 'video tutorial library' : 'onboarding guides'}. 
+              We're currently building our {activeTab === 2 ? 'video tutorial library' : 'onboarding guides'}. 
               Stay tuned for interactive walkthroughs and visual content!
             </Typography>
             <Button 
@@ -655,6 +682,11 @@ export const FaqHelpCenter: React.FC = () => {
           </Paper>
         </Box>
       )}
+      <FaqViewerModal 
+        open={viewerOpen}
+        onClose={() => setViewerOpen(false)}
+        faq={selectedFaq}
+      />
     </Box>
   </Box>
 );

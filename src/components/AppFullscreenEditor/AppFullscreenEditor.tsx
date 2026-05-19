@@ -56,30 +56,43 @@ export const AppFullscreenEditor: React.FC<AppFullscreenEditorProps> = ({
         </Stack>
       }
     >
-      <Box sx={{ p: { xs: 2, md: 4 }, maxWidth, mx: 'auto' }}>
+      <Box sx={{ 
+        flexGrow: 1, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        width: '100%', 
+        maxWidth: maxWidth === 1200 ? '100%' : maxWidth, // Allow expansion if default
+        mx: 'auto',
+        overflow: 'hidden'
+      }}>
         {tabs.length > 1 && (
-          <Tabs 
-            value={activeTab} 
-            onChange={(_, val) => setActiveTab(val)} 
-            sx={{ mb: 4, borderBottom: 1, borderColor: 'divider' }}
-          >
-            {tabs.map((tab, idx) => (
-              <Tab key={idx} label={tab} id={`editor-tab-${idx}`} />
-            ))}
-          </Tabs>
+          <Box sx={{ px: { xs: 2, md: 4 }, pt: 2 }}>
+            <Tabs 
+              value={activeTab} 
+              onChange={(_, val) => setActiveTab(val)} 
+              sx={{ borderBottom: 1, borderColor: 'divider' }}
+            >
+              {tabs.map((tab, idx) => (
+                <Tab key={idx} label={tab} id={`editor-tab-${idx}`} />
+              ))}
+            </Tabs>
+          </Box>
         )}
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.15 }}
-          >
-            {renderContent()}
-          </motion.div>
-        </AnimatePresence>
+        <Box sx={{ flexGrow: 1, overflowY: 'auto', p: { xs: 2, md: 4 }, display: 'flex', flexDirection: 'column' }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.15 }}
+              style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}
+            >
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
+        </Box>
       </Box>
     </AppFullscreenDialog>
   );

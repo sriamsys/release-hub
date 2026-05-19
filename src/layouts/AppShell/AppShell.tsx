@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { label: 'Release Notes', icon: <CampaignRounded sx={{ fontSize: 18 }} />, path: '/release-notes' },
   { label: 'Help Center', icon: <HelpCenterRounded sx={{ fontSize: 18 }} />, path: '/help' },
   { label: 'Knowledge Base', icon: <MenuBookRounded sx={{ fontSize: 18 }} />, path: '/faqs' },
+  { label: 'Notifications', icon: <CampaignRounded sx={{ fontSize: 18, transform: 'rotate(15deg)' }} />, path: '/notifications' },
 ];
 
 const DEMO_ITEMS = [

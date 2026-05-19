@@ -68,15 +68,23 @@ interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  sx?: any;
+  minHeight?: string | number;
 }
 
-export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeholder }) => {
+export const RichTextEditor: React.FC<RichTextEditorProps> = ({ 
+  value, 
+  onChange, 
+  placeholder,
+  sx,
+  minHeight = '200px'
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
       Underline,
       Link.configure({ openOnClick: false }),
-      Placeholder.configure({ placeholder: placeholder || 'Start writing release notes...' }),
+      Placeholder.configure({ placeholder: placeholder || 'Start writing...' }),
     ],
     content: value,
     onUpdate: ({ editor }) => {
@@ -87,7 +95,16 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
   if (!editor) return null;
 
   return (
-    <EditorWrapper>
+    <EditorWrapper sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      ...sx,
+      '& .ProseMirror': {
+        ...sx?.['& .ProseMirror'],
+        minHeight: minHeight,
+        flexGrow: 1
+      }
+    }}>
       <ToolbarContainer>
         <ToggleButtonGroup size="small">
           <Tooltip title="Bold">
@@ -197,7 +214,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange,
           </IconButton>
         </Box>
       </ToolbarContainer>
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }} />
     </EditorWrapper>
   );
 };
