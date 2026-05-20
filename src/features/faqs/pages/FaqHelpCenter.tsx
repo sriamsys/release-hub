@@ -267,75 +267,77 @@ export const FaqHelpCenter: React.FC = () => {
 
   return (
     <Box sx={{ height: '100%', bgcolor: 'background.default', overflowY: 'auto' }}>
-      {/* Header / Hero Section */}
-      <Box sx={{ 
-        bgcolor: 'primary.main', 
-        color: 'white', 
-        pt: 8, 
-        pb: 12, 
-        px: 4, 
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <Box sx={{ position: 'relative', zIndex: 1 }}>
-          <Typography variant="h3" sx={{ fontWeight: 900, mb: 2, letterSpacing: '-0.02em' }}>
-            How can we help?
-          </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.8, mb: 6, fontWeight: 400 }}>
-            Search our knowledge base or browse categories below.
-          </Typography>
-          
-          <Paper sx={{ 
-            maxWidth: 700, 
-            mx: 'auto', 
-            borderRadius: 3, 
-            p: 0.5, 
-            boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-            position: 'relative'
-          }}>
-            <TextField
-              fullWidth
-              inputRef={searchInputRef}
-              placeholder="Search for questions, tutorials, and more..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchRounded sx={{ ml: 1, color: 'text.secondary' }} />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Box sx={{ 
-                      bgcolor: 'slate.100', 
-                      color: 'text.secondary', 
-                      px: 1, 
-                      py: 0.5, 
-                      borderRadius: 1,
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      mr: 1,
-                      display: { xs: 'none', sm: 'block' }
-                    }}>
-                      /
-                    </Box>
-                  </InputAdornment>
-                ),
-                sx: { 
-                  borderRadius: 2.5,
-                  '& fieldset': { border: 'none' },
-                  height: 56,
-                  fontSize: '1.125rem'
-                }
-              }}
-            />
-          </Paper>
+      {/* Header / Hero Section (Hidden for Release Notes to match Stitch design) */}
+      {activeTab !== 1 && (
+        <Box sx={{ 
+          bgcolor: 'primary.main', 
+          color: 'white', 
+          pt: 8, 
+          pb: 12, 
+          px: 4, 
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <Box sx={{ position: 'relative', zIndex: 1 }}>
+            <Typography variant="h3" sx={{ fontWeight: 900, mb: 2, letterSpacing: '-0.02em' }}>
+              How can we help?
+            </Typography>
+            <Typography variant="h6" sx={{ opacity: 0.8, mb: 6, fontWeight: 400 }}>
+              Search our knowledge base or browse categories below.
+            </Typography>
+            
+            <Paper sx={{ 
+              maxWidth: 700, 
+              mx: 'auto', 
+              borderRadius: 3, 
+              p: 0.5, 
+              boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+              position: 'relative'
+            }}>
+              <TextField
+                fullWidth
+                inputRef={searchInputRef}
+                placeholder="Search for questions, tutorials, and more..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchRounded sx={{ ml: 1, color: 'text.secondary' }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Box sx={{ 
+                        bgcolor: 'slate.100', 
+                        color: 'text.secondary', 
+                        px: 1, 
+                        py: 0.5, 
+                        borderRadius: 1,
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        mr: 1,
+                        display: { xs: 'none', sm: 'block' }
+                      }}>
+                        /
+                      </Box>
+                    </InputAdornment>
+                  ),
+                  sx: { 
+                    borderRadius: 2.5,
+                    '& fieldset': { border: 'none' },
+                    height: 56,
+                    fontSize: '1.125rem'
+                  }
+                }}
+              />
+            </Paper>
+          </Box>
         </Box>
-      </Box>
+      )}
 
       {/* Copy Link Alert */}
       <Box sx={{ position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
@@ -351,7 +353,7 @@ export const FaqHelpCenter: React.FC = () => {
       </Box>
 
       {/* Main Content Area */}
-      <Box sx={{ maxWidth: 1400, mx: 'auto', px: 4, mt: -6, pb: 10 }}>
+      <Box sx={{ maxWidth: 1400, mx: 'auto', px: 4, mt: activeTab === 1 ? 4 : -6, pb: 10 }}>
         {/* Content Type Tabs */}
         <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
           <Paper sx={{ borderRadius: 3, p: 0.5, bgcolor: 'background.paper' }}>
