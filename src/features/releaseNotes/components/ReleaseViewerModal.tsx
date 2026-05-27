@@ -332,7 +332,7 @@ export const ReleaseViewerModal: React.FC<ReleaseViewerModalProps> = ({ open, on
                       <Grid item xs={12} md={8.5}>
                         <Box sx={{ p: { xs: 4, md: 8 }, bgcolor: 'white' }}>
                           <Box 
-                            dangerouslySetInnerHTML={{ __html: displayNote.content }}
+                            dangerouslySetInnerHTML={{ __html: displayNote.htmlContent || displayNote.content }}
                             className="markdown-body"
                             sx={{
                               '& h1': { fontSize: '2.25rem', fontWeight: 900, mt: 0, mb: 4, letterSpacing: '-0.03em', color: 'slate.900' },

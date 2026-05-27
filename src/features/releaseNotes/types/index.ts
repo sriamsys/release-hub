@@ -16,4 +16,6 @@ export interface ReleaseNote extends BaseEntity {
   heroStyle?: 'solid' | 'image';
   heroColor?: string;
   heroImage?: string;
+  markdownContent?: string;
+  htmlContent?: string;
 }

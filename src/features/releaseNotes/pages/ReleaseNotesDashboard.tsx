@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, Switch, FormControlLabel } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ColDef, GridReadyEvent, RowClickedEvent, GridApi } from 'ag-grid-community';
 import { AppSectionHeader, AppGrid, AppStatusChip, AppGridToolbar, AppGridActionsMenu, AppDeleteConfirmationModal } from '@/components';
@@ -8,6 +8,7 @@ import { useGridPersistence } from '@/hooks/useGridPersistence';
 import { FiltersPanel } from '../components/FiltersPanel';
 import { ColumnsPanel } from '../components/ColumnsPanel';
 import { ReleaseEditorModal } from '../components/ReleaseEditorModal';
+import { ReleaseEditorToastModal } from '../components/ReleaseEditorToastModal';
 import { ReleaseViewerModal } from '../components/ReleaseViewerModal';
 import { ReleaseNote } from '../types';
 import { generateNextVersion } from '../utils/versioning';
@@ -43,7 +44,9 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
   const [searchText, setSearchText] = useState('');
 
   // Modals state
+  const [useToastEditor, setUseToastEditor] = useState(true);
   const [editorOpen, setEditorOpen] = useState(false);
+  const [toastEditorOpen, setToastEditorOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState<ReleaseNote | null>(null);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -115,13 +118,21 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
 
   const handleAdd = useCallback(() => {
     setSelectedNote(null);
-    setEditorOpen(true);
-  }, []);
+    if (useToastEditor) {
+      setToastEditorOpen(true);
+    } else {
+      setEditorOpen(true);
+    }
+  }, [useToastEditor]);
 
   const handleEdit = useCallback((note: ReleaseNote) => {
     setSelectedNote(note);
-    setEditorOpen(true);
-  }, []);
+    if (useToastEditor) {
+      setToastEditorOpen(true);
+    } else {
+      setEditorOpen(true);
+    }
+  }, [useToastEditor]);
 
   const handleDuplicate = useCallback((note: ReleaseNote) => {
     const existingVersions = notes.map(n => n.version);
@@ -230,6 +241,35 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
       
       <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
         <Paper variant="outlined" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 2 }}>
+          <Box sx={{ 
+            px: 3, 
+            py: 1.25, 
+            borderBottom: '1px solid', 
+            borderColor: 'divider', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            bgcolor: '#f8fafc' 
+          }}>
+            <FormControlLabel
+              control={
+                <Switch 
+                  checked={useToastEditor} 
+                  onChange={(e) => setUseToastEditor(e.target.checked)} 
+                  size="small"
+                  color="primary"
+                />
+              }
+              label={
+                <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.secondary', display: 'flex', alignItems: 'center', gap: 0.5, fontFamily: 'Hanken Grotesk' }}>
+                   Use New Toast UI Editor Modal
+                </Typography>
+              }
+            />
+            <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 600 }}>
+              {useToastEditor ? "✓ Toast UI Active (WYSIWYG/Markdown)" : "📋 Legacy Editor Active"}
+            </Typography>
+          </Box>
           <AppGridToolbar 
             searchPlaceholder="Search releases..."
             onSearchChange={handleSearch}
@@ -282,6 +322,14 @@ export const ReleaseNotesDashboard: React.FC<ReleaseNotesDashboardProps> = ({
       <ReleaseEditorModal 
         open={editorOpen} 
         onClose={() => setEditorOpen(false)} 
+        onSave={handleSaveNote}
+        existingNotes={notes}
+        initialNote={selectedNote}
+      />
+
+      <ReleaseEditorToastModal
+        open={toastEditorOpen}
+        onClose={() => setToastEditorOpen(false)}
         onSave={handleSaveNote}
         existingNotes={notes}
         initialNote={selectedNote}

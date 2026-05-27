@@ -5,7 +5,7 @@ import {
   AccordionDetails,
   Box, Typography, Stack, Chip, Paper, IconButton, 
   TextField, InputAdornment, Button, Tooltip, 
-  Divider, useTheme, alpha
+  Divider, Grid, Link, useTheme, alpha
 } from '@mui/material';
 import { 
   SearchRounded, 
@@ -57,15 +57,14 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
   isNew
 }) => {
   const theme = useTheme();
-  const readTime = calculateReadTime(release.content || release.description);
+  const readTime = calculateReadTime(release.htmlContent || release.content || release.description);
   const formattedDate = format(new Date(release.createdAt), 'MMM dd, yyyy');
 
   return (
     <Box 
       sx={{ 
         position: 'relative', 
-        pl: 0, 
-        mb: 2,
+        mb: 3, // Matches space-y-lg feel but compact
         transition: 'all 0.2s ease'
       }}
     >
@@ -75,37 +74,46 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
         disableGutters
         elevation={0}
         sx={{ 
-          borderRadius: '12px !important',
+          borderRadius: '8px !important',
           border: '1px solid',
-          borderColor: isExpanded ? 'primary.main' : isLatest ? alpha(theme.palette.primary.main, 0.3) : 'divider',
-          bgcolor: isLatest && !isExpanded ? alpha(theme.palette.primary.main, 0.02) : 'background.paper',
+          borderColor: 'outline-variant',
+          bgcolor: 'background.paper',
           '&:before': { display: 'none' },
           overflow: 'hidden',
           transition: 'all 0.2s ease-in-out',
-          boxShadow: isExpanded ? '0 4px 20px rgba(0,0,0,0.06)' : isLatest ? '0 2px 8px rgba(0,0,0,0.02)' : 'none',
+          '&:hover': {
+            borderColor: 'outline',
+          },
           ...(isLatest && {
-            borderLeft: `5px solid ${theme.palette.primary.main}`,
+            borderLeft: (theme) => `4px solid ${theme.palette.primary.main}`,
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)',
+          }),
+          ...(isExpanded && {
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
           })
         }}
       >
         <AccordionSummary 
-          expandIcon={<ExpandMoreRounded sx={{ fontSize: 20 }} />}
+          expandIcon={isExpanded ? <KeyboardArrowUpRounded sx={{ fontSize: 20 }} /> : <KeyboardArrowDownRounded sx={{ fontSize: 20 }} />}
           sx={{ 
-            minHeight: { xs: 72, sm: 64 },
-            height: isExpanded ? 'auto' : { xs: 'auto', sm: 64 },
-            px: 3,
+            minHeight: isExpanded ? 72 : 64,
+            px: 2,
+            bgcolor: isLatest && isExpanded ? alpha(theme.palette.primary.main, 0.05) : 'transparent',
             '& .MuiAccordionSummary-content': {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 2,
-              my: 0.5
+              my: 1
+            },
+            '& .MuiAccordionSummary-expandIconWrapper': {
+              color: 'text.secondary',
+              '&:hover': { color: 'primary.main' }
             }
           }}
         >
-          {/* LEFT: Indicator + Title */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexGrow: 1, minWidth: 0 }}>
-            {/* Dot indicator for non-latest, non-expanded items */}
+          {/* LEFT: Version + Title */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexGrow: 1, minWidth: 0 }}>
             {!isLatest && !isExpanded && (
               <Box 
                 sx={{ 
@@ -113,23 +121,26 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
                   height: 8, 
                   borderRadius: '50%', 
                   bgcolor: 'divider',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  transition: 'background-color 0.2s',
+                  '.MuiAccordion-root:hover &': {
+                    bgcolor: 'primary.main'
+                  }
                 }} 
               />
             )}
             
-            {isNew && isLatest && (
+            {isNew && (
               <Chip 
                 label="NEW" 
                 size="small" 
-                color="primary" 
                 sx={{ 
                   height: 18, 
-                  fontWeight: 900, 
-                  fontSize: '0.6rem', 
+                  fontWeight: 600, 
+                  fontSize: '10px', 
                   px: 0.5,
-                  borderRadius: '4px',
-                  bgcolor: 'primary.main',
+                  borderRadius: '2px',
+                  bgcolor: '#0097B2',
                   color: 'white',
                   letterSpacing: '0.05em'
                 }} 
@@ -140,12 +151,12 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
               variant="body1" 
               sx={{ 
                 fontWeight: isExpanded || isLatest ? 700 : 500, 
-                color: isExpanded ? 'primary.main' : 'text.primary',
+                color: 'text.primary',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                fontSize: '0.95rem',
-                letterSpacing: '-0.01em'
+                fontSize: '1.25rem', // headline-md feel
+                fontFamily: 'Hanken Grotesk, sans-serif'
               }}
             >
               {isLatest ? `Release - ${release.version} - ${release.title}` : `${release.version} - ${release.title}`}
@@ -156,17 +167,13 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
           <Box sx={{ 
             display: { xs: 'none', sm: 'flex' }, 
             alignItems: 'center', 
-            gap: 2,
-            color: 'text.disabled',
+            gap: 1.5,
+            color: 'on-surface-variant',
             flexShrink: 0
           }}>
-            <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.75rem' }}>
-              {formattedDate}
+            <Typography variant="body2" sx={{ fontWeight: 400, opacity: 0.8, fontSize: '0.875rem' }}>
+              {formattedDate} • {readTime} min read
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'text.disabled', opacity: 0.4 }} />
-              <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.75rem' }}>{readTime} min read</Typography>
-            </Box>
           </Box>
         </AccordionSummary>
 
@@ -175,18 +182,19 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
             sx={{ 
               px: { xs: 3, md: 5 }, 
               pb: 4, 
-              pt: isLatest ? 2 : 0,
+              pt: 3,
               bgcolor: 'background.paper'
             }}
           >
-            {isLatest && (
+            {isExpanded && (
               <Typography 
                 variant="body1" 
                 sx={{ 
                   mb: 4, 
                   maxWidth: 800, 
                   fontStyle: 'italic', 
-                  color: 'text.secondary',
+                  color: 'on-surface-variant',
+                  fontSize: '1rem',
                   lineHeight: 1.6
                 }}
               >
@@ -194,18 +202,19 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
               </Typography>
             )}
 
-            <Divider sx={{ mb: 3, opacity: 0.4 }} />
+            <Divider sx={{ mb: 3, borderColor: 'outline-variant' }} />
             
             <Typography 
-              variant="subtitle2" 
+              variant="h6" 
               sx={{ 
-                fontWeight: 800, 
+                fontWeight: 700, 
                 color: 'primary.main', 
-                mb: 2.5,
-                fontSize: '0.875rem'
+                mb: 3,
+                fontSize: '1.25rem',
+                fontFamily: 'Hanken Grotesk, sans-serif'
               }}
             >
-              Release Summary
+              Detailed Notes
             </Typography>
 
             {/* Rich Text Content */}
@@ -216,61 +225,68 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
                 color: 'text.primary',
                 '& .markdown-body': {
                    fontSize: '1rem',
-                   lineHeight: 1.7,
-                   '& h1, h2, h3': { fontWeight: 800, mt: 4, mb: 2, color: 'slate.900' },
-                   '& p': { mb: 2.5 },
-                   '& ul, ol': { mb: 3, pl: 2 },
+                   lineHeight: 1.6,
+                   '& h1, h2, h3, h4': { 
+                      fontWeight: 700, 
+                      mt: 4, 
+                      mb: 2, 
+                      color: 'primary.main',
+                      fontFamily: 'Hanken Grotesk, sans-serif'
+                   },
+                   '& p': { mb: 2, color: 'on-surface-variant' },
+                   '& ul, ol': { mb: 3, pl: 0, listStyle: 'none' },
                    '& li': { 
                       mb: 1.5, 
-                      position: 'relative',
-                      pl: 3.5,
+                      display: 'flex', 
+                      alignItems: 'flex-start',
+                      gap: 2,
+                      color: 'on-surface-variant',
                       '&:before': {
-                        content: '"L"',
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 20,
-                        height: 20,
-                        borderRadius: '50%',
-                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        content: '"check_circle"',
+                        fontFamily: '"Material Symbols Outlined"',
+                        fontSize: '18px',
+                        color: theme.palette.primary.main,
+                        marginTop: '2px'
+                      },
+                      '& a': {
                         color: 'primary.main',
-                        fontSize: '12px',
-                        fontWeight: 'bold',
-                        // Mask as a checkmark if possible, or just use a component approach
+                        textDecoration: 'underline',
+                        textDecorationColor: alpha(theme.palette.primary.main, 0.3),
+                        fontWeight: 600,
+                        '&:hover': {
+                          textDecorationColor: theme.palette.primary.main
+                        }
                       }
-                   },
-                   '& code': { 
-                      bgcolor: 'slate.100', 
-                      px: 0.8, 
-                      py: 0.2, 
-                      borderRadius: 1, 
-                      fontFamily: 'monospace',
-                      fontSize: '0.85em',
-                      color: 'primary.dark'
                    },
                    '& table': {
                       width: '100%',
                       borderCollapse: 'collapse',
-                      mb: 3,
-                      borderRadius: 2,
+                      mb: 4,
+                      borderRadius: '4px',
                       overflow: 'hidden',
                       border: '1px solid',
-                      borderColor: 'divider',
+                      borderColor: 'outline-variant',
                       '& th, td': {
                         border: '1px solid',
-                        borderColor: 'divider',
-                        p: 1.5,
-                        textAlign: 'left'
+                        borderColor: 'outline-variant',
+                        p: 2,
+                        textAlign: 'left',
+                        fontSize: '14px'
                       },
                       '& th': { 
-                        bgcolor: 'slate.50', 
-                        fontWeight: 700, 
-                        fontSize: '0.7rem', 
+                        bgcolor: 'surface-container-low', 
+                        color: 'on-surface-variant',
+                        fontWeight: 600, 
                         textTransform: 'uppercase', 
-                        letterSpacing: '0.05em' 
+                        letterSpacing: '0.05em',
+                        fontSize: '11px'
+                      },
+                      '& td span': {
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        px: 1,
+                        py: 0.5,
+                        borderRadius: '2px'
                       }
                    }
                 }
@@ -278,10 +294,7 @@ const ReleaseFeedItem: React.FC<ReleaseFeedItemProps> = ({
             >
               <div 
                 className="markdown-body" 
-                dangerouslySetInnerHTML={{ __html: release.content }} 
-                // We'll handle list styling specifically in the CSS above
-                // But it's better to just use a custom component for lists if we could.
-                // Since it's dangerouslySetInnerHTML, we stick to CSS.
+                dangerouslySetInnerHTML={{ __html: release.htmlContent || release.content }} 
               />
             </Box>
 
@@ -526,37 +539,64 @@ export const ReleaseFeed: React.FC<ReleaseFeedProps> = ({ initialSearchQuery = '
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: { xs: '100%', md: 'auto' }, justifyContent: 'flex-end' }}>
           <Button 
-            startIcon={<UnfoldMoreRounded />}
+            startIcon={<UnfoldMoreRounded sx={{ fontSize: 20 }} />}
             onClick={expandAll}
-            sx={{ textTransform: 'none', color: 'text.secondary', fontWeight: 600, fontSize: '0.875rem', px: 2 }}
+            sx={{ 
+              textTransform: 'none', 
+              color: 'on-surface-variant', 
+              fontWeight: 500, 
+              fontSize: '14px', 
+              px: 2,
+              borderRadius: 1,
+              '&:hover': {
+                color: 'primary.main',
+                bgcolor: 'surface-container-low'
+              }
+            }}
           >
             Expand All
           </Button>
           <Button 
-            startIcon={<UnfoldLessRounded />}
+            startIcon={<UnfoldLessRounded sx={{ fontSize: 20 }} />}
             onClick={collapseAll}
-            sx={{ textTransform: 'none', color: 'text.secondary', fontWeight: 600, fontSize: '0.875rem', px: 2 }}
+            sx={{ 
+              textTransform: 'none', 
+              color: 'on-surface-variant', 
+              fontWeight: 500, 
+              fontSize: '14px', 
+              px: 2,
+              borderRadius: 1,
+              '&:hover': {
+                color: 'primary.main',
+                bgcolor: 'surface-container-low'
+              }
+            }}
           >
             Collapse All
           </Button>
           
-          <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, mx: 1 }} />
+          <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, mx: 1, height: 24, alignSelf: 'center' }} />
           
           <Button 
-            startIcon={<HistoryRounded />}
+            startIcon={<ArrowUpwardRounded sx={{ fontSize: 20 }} />}
             onClick={jumpToLatest}
             variant="outlined"
             sx={{ 
               textTransform: 'none', 
-              fontWeight: 600, 
-              fontSize: '0.875rem', 
-              borderRadius: 2,
-              borderColor: 'divider',
-              color: 'text.primary',
-              bgcolor: 'background.paper',
+              fontWeight: 500, 
+              fontSize: '14px', 
+              borderRadius: 1,
+              borderColor: 'outline-variant',
+              color: 'on-surface',
+              bgcolor: 'white',
               whiteSpace: 'nowrap',
-              px: 3,
-              '&:hover': { borderColor: 'primary.main', color: 'primary.main' }
+              px: 2,
+              py: 1,
+              '&:hover': { 
+                borderColor: 'primary.main', 
+                color: 'primary.main',
+                bgcolor: 'white'
+              }
             }}
           >
             Jump to Latest
@@ -601,6 +641,139 @@ export const ReleaseFeed: React.FC<ReleaseFeedProps> = ({ initialSearchQuery = '
           )}
         </AnimatePresence>
       </Box>
+
+      {/* Load More Button */}
+      <Box sx={{ mt: 6, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+        <Button 
+          variant="outlined" 
+          sx={{ 
+            borderRadius: '100px', 
+            px: 4, 
+            py: 1, 
+            textTransform: 'none', 
+            fontWeight: 500, 
+            fontSize: '14px',
+            borderColor: 'outline-variant',
+            color: 'on-surface',
+            bgcolor: 'white',
+            '&:hover': {
+              borderColor: 'primary.main',
+              color: 'primary.main',
+              bgcolor: 'white'
+            }
+          }}
+        >
+          Load Older Releases
+        </Button>
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Link href="#" sx={{ color: 'on-surface-variant', fontSize: '12px', fontWeight: 500, textDecoration: 'underline', '&:hover': { color: 'primary.main' } }}>Archived Notes 2025</Link>
+          <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'outline-variant' }} />
+          <Link href="#" sx={{ color: 'on-surface-variant', fontSize: '12px', fontWeight: 500, textDecoration: 'underline', '&:hover': { color: 'primary.main' } }}>API Documentation</Link>
+        </Stack>
+      </Box>
+
+      {/* Bento Aesthetic Support (Newsletter/Social) */}
+      <Grid container spacing={3} sx={{ mt: 8 }}>
+        <Grid item xs={12} md={8}>
+          <Paper 
+            elevation={0}
+            sx={{ 
+              p: 4, 
+              bgcolor: 'inverse-surface', 
+              color: 'inverse-on-surface', 
+              borderRadius: 4,
+              height: '100%',
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}
+          >
+            <Box sx={{ position: 'relative', zIndex: 1, maxWidth: 450 }}>
+              <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: 'inherit', fontFamily: 'Hanken Grotesk, sans-serif' }}>
+                Never miss an update
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.8, mb: 3 }}>
+                Subscribe to our weekly release digest to get technical notes delivered directly to your inbox.
+              </Typography>
+              <Stack direction="row" spacing={2}>
+                <TextField 
+                  fullWidth 
+                  size="small" 
+                  placeholder="email@company.com" 
+                  sx={{ 
+                    bgcolor: 'rgba(255,255,255,0.1)',
+                    borderRadius: 2,
+                    '& .MuiOutlinedInput-root': {
+                      color: 'white',
+                      '& fieldset': { borderColor: 'rgba(255,255,255,0.2)' },
+                      '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
+                    }
+                  }}
+                />
+                <Button variant="contained" color="secondary" sx={{ borderRadius: 2, px: 3, fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  Subscribe
+                </Button>
+              </Stack>
+            </Box>
+            <Box 
+              sx={{ 
+                position: 'absolute', 
+                right: -40, 
+                bottom: -40, 
+                opacity: 0.1,
+                userSelect: 'none'
+              }}
+            >
+              <Box 
+                component="span" 
+                className="material-symbols-outlined" 
+                sx={{ fontSize: '240px !important' }}
+              >
+                mail
+              </Box>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Paper 
+            variant="outlined"
+            sx={{ 
+              p: 4, 
+              textAlign: 'center', 
+              borderRadius: 4, 
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+              cursor: 'pointer',
+              borderColor: 'outline-variant',
+              bgcolor: 'surface-container-high',
+              '&:hover': {
+                boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            <Box 
+              component="span" 
+              className="material-symbols-outlined" 
+              sx={{ fontSize: '48px !important', color: 'primary.main', mb: 2 }}
+            >
+              help
+            </Box>
+            <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, fontFamily: 'Hanken Grotesk, sans-serif' }}>
+              Need Help?
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'on-surface-variant' }}>
+              Contact our engineering support team for integration questions.
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
 
       {/* Bottom Footer */}
       <Box sx={{ mt: 6, pb: 4, textAlign: 'center' }}>
