@@ -92,6 +92,12 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     },
   });
 
+  React.useEffect(() => {
+    if (editor && value !== undefined && editor.getHTML() !== value) {
+      editor.commands.setContent(value, { emitUpdate: false });
+    }
+  }, [value, editor]);
+
   if (!editor) return null;
 
   return (
